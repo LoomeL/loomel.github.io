@@ -1,0 +1,86 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>LoomeL</title>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body style="margin: 20px">
+        <div class="container">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="col-3">01.01.2001</td>
+                        <td class="col-3">Nl-07-2131</td>
+                        <td class="col-3">СГВ-15 хол</td>
+                        <td class="col-3">11223344</td>
+                    </tr>
+                    <tr>
+                        <td class="col-3"></td>
+                        <td class="col-3">3874000</td>
+                        <td class="col-3">2009</td>
+                        <td class="col-3"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">Малинкин Е.А. мкр. 7-74-17</td>
+                        <td>
+                            <button type="button" class="btn btn-primary">Назад</button>
+                            <button type="button" class="btn btn-success">Далее</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <script>
+            axios.get("https://loomel.ru/protocols.json").then((e) => {
+                data = e.data
+
+                let t = 0
+
+                swal({
+                    content: "input",
+                }).then(e => {
+                    t = e - 1617
+                    formatter(data[t])
+                })
+
+                let [btn1, btn2] = document.querySelectorAll("button")
+
+                btn1.addEventListener("click", (e) => {
+                    if (data[t - 1] == null) return
+                    t--
+                    formatter(data[t])
+                })
+                
+                btn2.addEventListener("click", (e) => {
+                    if (data[t + 1] == null) return
+                    t++
+                    formatter(data[t])
+                })
+            })
+
+            function formatter(j) {
+                let [row1, row2, row3] = document.querySelectorAll("tr")
+
+                row10 = row1.querySelectorAll("td")
+                row10[0].innerText = j.date
+                row10[1].innerText = j.number
+                row10[2].innerText = j.type
+                row10[3].innerText = j.sn
+
+                row20 = row2.querySelectorAll("td")
+                row20[0].innerText = j.fio
+                row20[1].innerText = j.label
+                row20[2].innerText = j.year
+
+                row3.querySelector("td").innerText = j.user
+            }
+        
+        </script>
+    </body>
+</html>
